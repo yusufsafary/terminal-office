@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,7 +28,6 @@
       overflow-x: hidden;
     }
 
-    /* ── Canvas BG ── */
     #bg-canvas {
       position: fixed;
       inset: 0;
@@ -88,7 +87,6 @@
     }
 
     .hero-title .line-green { color: var(--accent); }
-    .hero-title .line-blue  { color: var(--accent2); }
 
     .hero-sub {
       margin-top: 1.5rem;
@@ -184,8 +182,7 @@
       font-family: 'Space Mono', monospace;
       font-size: 0.72rem;
       color: var(--muted);
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto;
     }
 
     .terminal-body {
@@ -249,9 +246,9 @@
       font-size: 1.4rem;
       margin-bottom: 1.2rem;
     }
-    .icon-green { background: rgba(0,255,136,0.1); }
-    .icon-blue  { background: rgba(0,102,255,0.1); }
-    .icon-purple{ background: rgba(153,0,255,0.1); }
+    .icon-green  { background: rgba(0,255,136,0.1); }
+    .icon-blue   { background: rgba(0,102,255,0.1); }
+    .icon-purple { background: rgba(153,0,255,0.1); }
 
     .card h3 {
       font-size: 1.1rem;
@@ -265,7 +262,6 @@
       line-height: 1.6;
     }
 
-    /* ── Footer ── */
     footer {
       position: relative;
       z-index: 1;
@@ -277,7 +273,6 @@
       font-family: 'Space Mono', monospace;
     }
 
-    /* ── Keyframes ── */
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -286,7 +281,7 @@
     }
     @keyframes pulse {
       0%,100% { box-shadow: 0 0 6px var(--accent); }
-      50% { box-shadow: 0 0 14px var(--accent); }
+      50%      { box-shadow: 0 0 14px var(--accent); }
     }
   </style>
 </head>
@@ -294,7 +289,6 @@
 
 <canvas id="bg-canvas"></canvas>
 
-<!-- Hero -->
 <section class="hero">
   <div class="badge">Status: Online &amp; Ready</div>
 
@@ -304,16 +298,15 @@
   </h1>
 
   <p class="hero-sub">
-    Ruang kerja digital yang cepat, bersih, dan siap pakai.
-    Produktivitas tanpa batas di mana saja.
+    Your digital workspace — fast, clean, and always ready.
+    Build, ship, and collaborate without limits.
   </p>
 
   <div class="hero-cta">
-    <a href="#features" class="btn btn-primary">Mulai Sekarang →</a>
-    <a href="#features" class="btn btn-outline">Pelajari Lebih</a>
+    <a href="#features" class="btn btn-primary">Get Started →</a>
+    <a href="#features" class="btn btn-outline">Learn More</a>
   </div>
 
-  <!-- Terminal mock -->
   <div class="terminal-wrap">
     <div class="terminal">
       <div class="terminal-bar">
@@ -323,28 +316,31 @@
         <div class="terminal-title">terminal-office ~ workspace</div>
       </div>
       <div class="terminal-body" id="terminal-body">
-        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd" id="typed-cmd"></span><span class="cursor" id="cursor"></span></div>
+        <div class="t-line">
+          <span class="t-prompt">$</span>
+          <span class="t-cmd" id="typed-cmd"></span>
+          <span class="cursor"></span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Features -->
 <section class="features" id="features">
   <div class="card" data-delay="0">
     <div class="card-icon icon-green">⚡</div>
-    <h3>Cepat & Responsif</h3>
-    <p>Dioptimalkan untuk performa tinggi. Setiap interaksi terasa instan dan mulus.</p>
+    <h3>Fast &amp; Responsive</h3>
+    <p>Optimised for high performance. Every interaction feels instant and seamless.</p>
   </div>
   <div class="card" data-delay="150">
     <div class="card-icon icon-blue">🛡️</div>
-    <h3>Aman & Terpercaya</h3>
-    <p>Infrastruktur berlapis dengan enkripsi end-to-end untuk menjaga data kamu.</p>
+    <h3>Secure &amp; Reliable</h3>
+    <p>Layered infrastructure with end-to-end encryption to keep your data safe.</p>
   </div>
   <div class="card" data-delay="300">
     <div class="card-icon icon-purple">🚀</div>
-    <h3>Siap Deploy</h3>
-    <p>Dari development hingga production dalam hitungan detik. Workflow yang efisien.</p>
+    <h3>Ship Instantly</h3>
+    <p>From development to production in seconds. A workflow built for speed.</p>
   </div>
 </section>
 
@@ -355,7 +351,7 @@
 (function () {
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
-  let W, H, particles = [], lines = [];
+  let W, H;
   const N = 70;
 
   function resize() {
@@ -391,28 +387,24 @@
     }
   }
 
+  const particles = [];
   for (let i = 0; i < N; i++) particles.push(new Particle());
 
-  /* mouse */
   let mx = -9999, my = -9999;
   window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
 
-    /* grid */
+    /* subtle grid */
     ctx.strokeStyle = 'rgba(255,255,255,0.025)';
     ctx.lineWidth = 1;
     const gs = 80;
-    for (let x = 0; x < W; x += gs) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-    }
-    for (let y = 0; y < H; y += gs) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-    }
+    for (let x = 0; x < W; x += gs) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y < H; y += gs) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
 
-    /* connect nearby */
     for (let i = 0; i < particles.length; i++) {
+      /* connect nearby particles */
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
@@ -426,7 +418,6 @@
           ctx.stroke();
         }
       }
-
       /* connect to mouse */
       const dm = Math.hypot(particles[i].x - mx, particles[i].y - my);
       if (dm < 160) {
@@ -437,12 +428,11 @@
         ctx.lineWidth = 1;
         ctx.stroke();
       }
-
       particles[i].update();
       particles[i].draw();
     }
 
-    /* subtle radial glow under mouse */
+    /* radial glow under mouse */
     if (mx > 0) {
       const g = ctx.createRadialGradient(mx, my, 0, mx, my, 300);
       g.addColorStop(0, 'rgba(0,255,136,0.04)');
@@ -458,91 +448,59 @@
 
 /* ── Terminal typewriter ── */
 (function () {
-  const lines = [
+  const sequences = [
     { cmd: 'npm run dev', outs: [] },
     { cmd: '', outs: [
       { text: '> terminal-office@1.0.0 dev', cls: '' },
-      { text: '✓  Server running on :3000', cls: 'green' },
-      { text: '✓  Hot reload enabled', cls: 'green' },
-      { text: '→  terminaloffice.fun', cls: 'blue' },
+      { text: '✓  Server running on :3000',  cls: 'green' },
+      { text: '✓  Hot reload enabled',        cls: 'green' },
+      { text: '→  terminaloffice.fun',        cls: 'blue'  },
     ]},
   ];
 
-  const body  = document.getElementById('terminal-body');
-  const typed = document.getElementById('typed-cmd');
-  const cur   = document.getElementById('cursor');
+  const body = document.getElementById('terminal-body');
 
-  let step = 0, charIdx = 0;
-
-  function typeChar() {
-    const line = lines[step];
-    if (charIdx < line.cmd.length) {
-      typed.textContent += line.cmd[charIdx++];
-      setTimeout(typeChar, 60 + Math.random() * 40);
-    } else {
-      setTimeout(showOutput, 400);
-    }
+  function appendLine(html) {
+    const d = document.createElement('div');
+    d.className = 't-line';
+    d.innerHTML = html;
+    body.appendChild(d);
+    return d;
   }
 
-  function showOutput() {
-    const line = lines[step];
-    cur.style.display = 'none';
-
-    line.outs.forEach((out, i) => {
-      setTimeout(() => {
-        const d = document.createElement('div');
-        d.className = 't-line';
-        d.innerHTML = `<span class="t-out ${out.cls}">${out.text}</span>`;
-        body.appendChild(d);
-      }, i * 200);
-    });
-
-    const total = line.outs.length * 200 + 400;
-    setTimeout(() => {
-      step++;
-      if (step < lines.length) {
-        const newRow = document.createElement('div');
-        newRow.className = 't-line';
-        newRow.innerHTML = '<span class="t-prompt">$</span><span class="t-cmd" id="typed-cmd2"></span><span class="cursor"></span>';
-        body.appendChild(newRow);
-        const newTyped = document.getElementById('typed-cmd2');
-        newTyped.id = 'typed-cmd'; // reuse
-        charIdx = 0;
-        // repoint
-        Object.defineProperty(window, '_typed', { get: () => newTyped, configurable: true });
-        typeNextLine(newTyped);
-      }
-    }, total);
-  }
-
-  function typeNextLine(el) {
-    const line = lines[step];
+  function typeLine(el, text, cb) {
     let i = 0;
-    function t() {
-      if (i < line.cmd.length) { el.textContent += line.cmd[i++]; setTimeout(t, 65 + Math.random() * 35); }
-      else { setTimeout(() => showOutputFor(line, el), 400); }
-    }
-    t();
+    (function t() {
+      if (i < text.length) { el.textContent += text[i++]; setTimeout(t, 60 + Math.random() * 40); }
+      else if (cb) setTimeout(cb, 400);
+    })();
   }
 
-  function showOutputFor(line, el) {
-    el.nextElementSibling.style.display = 'none';
-    line.outs.forEach((out, i) => {
-      setTimeout(() => {
-        const d = document.createElement('div');
-        d.className = 't-line';
-        d.innerHTML = `<span class="t-out ${out.cls}">${out.text}</span>`;
-        body.appendChild(d);
-      }, i * 200);
+  function runSequence(idx) {
+    if (idx >= sequences.length) return;
+    const seq = sequences[idx];
+
+    const row = appendLine(`<span class="t-prompt">$</span><span class="t-cmd"></span><span class="cursor"></span>`);
+    const cmdEl = row.querySelector('.t-cmd');
+    const cur   = row.querySelector('.cursor');
+
+    typeLine(cmdEl, seq.cmd, () => {
+      cur.style.display = 'none';
+      seq.outs.forEach((out, i) => {
+        setTimeout(() => {
+          appendLine(`<span class="t-out ${out.cls}">${out.text}</span>`);
+          if (i === seq.outs.length - 1) setTimeout(() => runSequence(idx + 1), 600);
+        }, i * 200);
+      });
+      if (!seq.outs.length) runSequence(idx + 1);
     });
   }
 
-  setTimeout(typeChar, 1200);
+  setTimeout(() => runSequence(0), 1200);
 })();
 
-/* ── Intersection Observer for cards ── */
+/* ── Scroll reveal for cards ── */
 (function () {
-  const cards = document.querySelectorAll('.card');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -552,7 +510,7 @@
       }
     });
   }, { threshold: 0.15 });
-  cards.forEach(c => obs.observe(c));
+  document.querySelectorAll('.card').forEach(c => obs.observe(c));
 })();
 </script>
 </body>
